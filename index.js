@@ -30,6 +30,14 @@ async function run() {
       const item = await cursor.toArray();
       res.send(item);
     });
+    app.get("/product/:id", async (req, res) => {
+      const query = {};
+      const cursor = collection.find(query);
+      const item = await cursor.toArray();
+      const id = req.params.id;
+      const selectedcourses = item.filter((n) => n._id == id);
+      res.send(selectedcourses);
+    });
     app.get("/upcoming", async (req, res) => {
       const query = {};
       const cursor = upcollection.find(query);
@@ -46,6 +54,23 @@ async function run() {
       const id = req.params.id;
       const query = { _id: ObjectId(id) };
       const result = await collection.deleteOne(query);
+      res.send(result);
+    });
+    app.put("/services/:id", async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: ObjectId(id) };
+      const option = { upsert: true };
+      const service = req.body;
+      console.log(service);
+      const updatedUser = {
+        $set: {
+          name: service.title,
+          img: service.imageLink,
+          price: service.price,
+        },
+      };
+
+      const result = await collection.updateOne(filter, updatedUser, option);
       res.send(result);
     });
   } finally {
