@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+//ExpressJS, MongoDB, Cors
 const {
   MongoClient,
   ServerApiVersion,
@@ -43,7 +44,7 @@ async function run() {
       const cursor = upcollection.find(query);
       const item = await cursor.toArray();
       res.send(item);
-    });
+    }); // create read update delete
     app.post("/products", async (req, res) => {
       const add = req.body;
       console.log(add);
